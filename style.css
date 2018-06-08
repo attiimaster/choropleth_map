@@ -1,0 +1,29 @@
+body {
+	color: #777;
+	font-family: 'open sans';
+	margin: 0;
+	text-align: center;
+}
+small {
+	display: block;
+}
+.svg {
+	border: 2px solid #eee;
+	border-radius: 4px;
+	margin: 0px;
+	margin-top: 2%;
+}
+
+.county {
+  fill: none;
+  stroke: #fff;
+}
+
+.states {
+  fill: none;
+  stroke: silver;
+  stroke-linejoin: round;
+}
+#tooltip {}
+
+#legend {}
