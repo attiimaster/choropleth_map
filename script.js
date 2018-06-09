@@ -10,6 +10,8 @@ async function fetchData(eduUrl, mapUrl) {
 }
 
 function drawSvg(edu, map) {
+
+//setup
 const w = 960;
 const h = 600;
 const padding = 50;
@@ -36,18 +38,25 @@ const svg = d3.select("body")
               .attr("height", h)
         .attr("class", "svg");
 
+//tooltip
+const tooltip = d3.select("body")
+  .append("div")
+  .attr("id", "tooltip")
+  .style("visibility", "hidden")
+
 //counties
 svg.append("g")
-  .attr("class", "county")
+  .attr("class", "counties")
   .selectAll("path")
   .data(topojson.feature(map, map.objects.counties).features).enter()
   .append("path")
-  .attr("d", path)
+  .attr("class", "county")
   .attr("data-fips", d => d.id)
-  .attr("data-education", d => getPercentage(d.id))
-  .attr("fill", d => color(getPercentage(d.id)))
-  .on("mouseover", e => console.log(e))
-
+  .attr("data-education", d => getEduData(d.id).bachelorsOrHigher)
+  .attr("d", path)
+  .attr("fill", d => color(getEduData(d.id).bachelorsOrHigher))
+  .on("mouseover", d => toggleTooltip(d.id))
+  .on("mouseout", d => toggleTooltip(d.id))
 
 //county borders
 svg.append("path")
@@ -89,15 +98,24 @@ legend.call(d3.axisBottom(x)
   .select(".domain")
     .remove();
 
-//tooltip
-const tooltip = svg.append("div")
 
-
-  function getPercentage(id) {
+  function getEduData(id) {
     for (let i=0; i<edu.length;i++) {
       if (edu[i].fips === id) {
-        return edu[i].bachelorsOrHigher;
+        return edu[i];
       }
     }
+  }
+  function toggleTooltip(id) {
+    const visibility = document.getElementById("tooltip").style.visibility;
+    const d = getEduData(id);
+    visibility === "hidden" ? 
+      tooltip.style("visibility", "visible")
+        .attr("data-fips", d.id)
+        .attr("data-education", d.bachelorsOrHigher)
+        .style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px")
+        .text(d.area_name + "(" + d.state + ")" + ": " + d.bachelorsOrHigher + "%")
+      :
+      tooltip.style("visibility", "hidden")
   }
 }

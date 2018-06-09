@@ -8,22 +8,24 @@ small {
 	display: block;
 }
 .svg {
-	border: 2px solid #eee;
-	border-radius: 4px;
 	margin: 0px;
 	margin-top: 2%;
 }
 
-.county {
+.counties {
   fill: none;
-  stroke: #fff;
+  stroke: rgba(240, 240, 240, 0.3);;
 }
 
 .states {
   fill: none;
-  stroke: silver;
+  stroke: white;
   stroke-linejoin: round;
 }
-#tooltip {}
+#tooltip {
+	background: rgba(240, 240, 240, 0.8);
+	padding: 5px;
+	position: absolute;
+}
 
 #legend {}
